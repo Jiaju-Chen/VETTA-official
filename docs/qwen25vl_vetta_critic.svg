@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120" role="img" aria-labelledby="title desc">
+  <title id="title">VETTA on Qwen2.5-VL: truncate the language decoder, retain vision</title>
+  <desc id="desc">A conceptual diagram showing text and image inputs processed by Qwen2.5-VL multimodal front-end. The actor keeps all 36 language decoder layers. The VETTA critic keeps two language decoder layers and two value heads; the 32-layer visual tower is not truncated. A note states that end-to-end VLM critic support is not yet verified in the clean code snapshot.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L9,4 L0,8 Z" fill="#52616b"/>
+    </marker>
+    <marker id="arrowTeal" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L9,4 L0,8 Z" fill="#167d78"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L9,4 L0,8 Z" fill="#b96523"/>
+    </marker>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; fill: #202a31; }
+      .title { font-size: 34px; font-weight: 700; }
+      .subtitle { font-size: 19px; fill: #53616a; }
+      .section { font-size: 22px; font-weight: 700; }
+      .label { font-size: 18px; font-weight: 600; }
+      .body { font-size: 16px; fill: #41515a; }
+      .small { font-size: 14px; fill: #5b6870; }
+      .layer { font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .teal-text { fill: #167d78; }
+      .orange-text { fill: #9b551f; }
+      .white-text { fill: #ffffff; }
+      .panel { fill: #ffffff; stroke: #cbd4d8; stroke-width: 2; }
+      .arrow { fill: none; stroke: #52616b; stroke-width: 2.5; marker-end: url(#arrow); }
+      .arrow-teal { fill: none; stroke: #167d78; stroke-width: 2.5; marker-end: url(#arrowTeal); }
+      .arrow-orange { fill: none; stroke: #b96523; stroke-width: 2.5; marker-end: url(#arrowOrange); }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1120" fill="#f7f9f8"/>
+  <text x="64" y="66" class="title">VETTA 接入 Qwen2.5-VL：裁减语言 decoder，不裁视觉塔</text>
+  <text x="66" y="101" class="subtitle">以 Qwen2.5-VL-3B 为例：Vision Transformer 有 32 层；语言 decoder 有 36 层。</text>
+
+  <rect x="64" y="126" width="1472" height="116" rx="10" fill="#ffffff" stroke="#cbd4d8" stroke-width="2"/>
+  <text x="88" y="157" class="section">多模态观察输入</text>
+  <g transform="translate(94 174)">
+    <rect x="0" y="0" width="168" height="52" rx="5" fill="#edf3f1" stroke="#9bb0aa"/>
+    <g transform="translate(8 7)">
+      <rect x="0" y="0" width="38" height="38" fill="#e5ece7" stroke="#9aaba2"/>
+      <rect x="1" y="1" width="11" height="11" fill="#c5d8cf"/><rect x="13" y="1" width="11" height="11" fill="#c5d8cf"/><rect x="25" y="1" width="12" height="11" fill="#d6e0da"/>
+      <rect x="1" y="13" width="11" height="11" fill="#c5d8cf"/><rect x="13" y="13" width="11" height="11" fill="#d8965f"/><rect x="25" y="13" width="12" height="11" fill="#e8d27a"/>
+      <rect x="1" y="25" width="11" height="12" fill="#b8c8c0"/><rect x="13" y="25" width="11" height="12" fill="#b8c8c0"/><rect x="25" y="25" width="12" height="12" fill="#b8c8c0"/>
+      <text x="57" y="15" class="label">环境截图</text><text x="57" y="36" class="small">图像 / 视频帧</text>
+    </g>
+    <text x="190" y="31" class="small">+</text>
+    <text x="218" y="21" class="label">文字指令与历史</text>
+    <text x="218" y="42" class="small">“把箱子推到目标点……”</text>
+  </g>
+  <text x="686" y="195" class="body">同一条决策需要看图，也需要读文本上下文。</text>
+
+  <rect x="64" y="264" width="1472" height="314" rx="10" fill="#ffffff" stroke="#cbd4d8" stroke-width="2"/>
+  <text x="88" y="298" class="section">Qwen2.5-VL 多模态前端（VETTA Critic 也必须接收图像特征）</text>
+  <rect x="88" y="317" width="1424" height="145" rx="8" fill="#f0f5f3" stroke="#b5c8c1"/>
+  <text x="106" y="343" class="label teal-text">视觉通路</text>
+  <rect x="106" y="358" width="160" height="74" rx="7" fill="#ffffff" stroke="#a8bbb4"/>
+  <text x="186" y="386" class="label" text-anchor="middle">动态分辨率</text><text x="186" y="412" class="body" text-anchor="middle">切成图像 patches</text>
+  <path d="M270 395 H305" class="arrow"/>
+  <rect x="316" y="358" width="340" height="74" rx="7" fill="#dcece7" stroke="#6ea79a" stroke-width="2"/>
+  <text x="486" y="387" class="label" text-anchor="middle">Vision Transformer (ViT)</text><text x="486" y="413" class="body" text-anchor="middle">32 个视觉 blocks，全部保留</text>
+  <path d="M660 395 H695" class="arrow"/>
+  <rect x="706" y="358" width="350" height="74" rx="7" fill="#e8eef4" stroke="#91a9bd" stroke-width="2"/>
+  <text x="881" y="387" class="label" text-anchor="middle">Vision-Language Merger</text><text x="881" y="413" class="body" text-anchor="middle">邻近 2×2 patch 合并，经 MLP 投影</text>
+  <path d="M1060 395 H1095" class="arrow"/>
+  <rect x="1106" y="358" width="376" height="74" rx="7" fill="#ffffff" stroke="#a8bbb4"/>
+  <text x="1294" y="387" class="label" text-anchor="middle">视觉特征 tokens</text><text x="1294" y="413" class="body" text-anchor="middle">映射到语言 hidden size</text>
+
+  <rect x="88" y="475" width="1424" height="78" rx="8" fill="#fff7ed" stroke="#e0c4a5"/>
+  <text x="108" y="504" class="label orange-text">文本通路</text>
+  <text x="108" y="532" class="body">指令 / 对话历史</text>
+  <path d="M304 515 H354" class="arrow-orange"/>
+  <rect x="366" y="489" width="255" height="48" rx="7" fill="#ffffff" stroke="#d0ad85"/>
+  <text x="493" y="519" class="label" text-anchor="middle">Tokenizer + Embedding</text>
+  <path d="M628 515 H680" class="arrow-orange"/>
+  <rect x="694" y="489" width="788" height="48" rx="7" fill="#fbefdf" stroke="#d0ad85"/>
+  <text x="1088" y="519" class="body" text-anchor="middle">文本 tokens 与视觉特征按 image-token 位置组成一个多模态上下文序列</text>
+
+  <path d="M800 578 V610 H420 V628" class="arrow-teal"/>
+  <path d="M800 610 H1180 V628" class="arrow-orange"/>
+
+  <rect x="64" y="632" width="704" height="302" rx="10" fill="#eaf4f1" stroke="#83afa2" stroke-width="2"/>
+  <rect x="832" y="632" width="704" height="302" rx="10" fill="#fff3e8" stroke="#d49a65" stroke-width="2"/>
+  <text x="90" y="671" class="section teal-text">Actor：保持完整 VLM</text>
+  <text x="858" y="671" class="section orange-text">VETTA Critic：只缩短语言 decoder</text>
+  <text x="90" y="703" class="body">多模态上下文 →</text>
+  <text x="858" y="703" class="body">多模态上下文 →</text>
+
+  <rect x="90" y="723" width="644" height="118" rx="8" fill="#ffffff" stroke="#98b7ad"/>
+  <text x="108" y="750" class="label">Qwen2.5-VL Language Decoder · 36 层</text>
+  <g transform="translate(108 771)">
+    <rect x="0" y="0" width="40" height="38" rx="4" fill="#8fc0ad"/><text x="20" y="24" class="layer">0</text>
+    <rect x="46" y="0" width="40" height="38" rx="4" fill="#8fc0ad"/><text x="66" y="24" class="layer">1</text>
+    <rect x="92" y="0" width="40" height="38" rx="4" fill="#b3d1c5"/><text x="112" y="24" class="layer">2</text>
+    <rect x="138" y="0" width="40" height="38" rx="4" fill="#b3d1c5"/><text x="158" y="24" class="layer">3</text>
+    <text x="204" y="26" class="label">…</text>
+    <rect x="242" y="0" width="48" height="38" rx="4" fill="#b3d1c5"/><text x="266" y="24" class="layer">35</text>
+    <text x="321" y="24" class="body">0–35 均保留</text>
+  </g>
+  <path d="M412 843 V866" class="arrow-teal"/>
+  <rect x="205" y="871" width="390" height="46" rx="8" fill="#167d78"/>
+  <text x="400" y="901" class="white-text" font-size="18" font-weight="700" text-anchor="middle">Policy head → 生成动作 token</text>
+
+  <rect x="858" y="723" width="644" height="118" rx="8" fill="#ffffff" stroke="#d8b18b"/>
+  <text x="876" y="750" class="label">Critic 的 Language Decoder · 36 → 2 层</text>
+  <g transform="translate(876 771)">
+    <rect x="0" y="0" width="48" height="38" rx="4" fill="#e5aa70"/><text x="24" y="24" class="layer">0</text>
+    <rect x="54" y="0" width="48" height="38" rx="4" fill="#e5aa70"/><text x="78" y="24" class="layer">1</text>
+    <path d="M110 18 H142" stroke="#a85b31" stroke-width="2" stroke-dasharray="5 4"/>
+    <rect x="151" y="0" width="266" height="38" rx="4" fill="#f5f1ed" stroke="#bcb3ab" stroke-dasharray="6 4"/>
+    <text x="284" y="24" class="body" text-anchor="middle">2…35：不实例化 / 不进入 Critic</text>
+  </g>
+  <text x="876" y="829" class="small">同一类图像+文本输入；图中不表示 Actor/Critic 共享权重。</text>
+  <path d="M1179 843 V856" class="arrow-orange"/>
+  <rect x="897" y="862" width="236" height="54" rx="8" fill="#b96523"/>
+  <text x="1015" y="895" class="white-text" font-size="17" font-weight="700" text-anchor="middle">Token value head</text>
+  <rect x="1227" y="862" width="236" height="54" rx="8" fill="#b96523"/>
+  <text x="1345" y="895" class="white-text" font-size="17" font-weight="700" text-anchor="middle">Turn value head</text>
+
+  <rect x="64" y="956" width="1472" height="122" rx="10" fill="#f0f2f2" stroke="#c6cecf" stroke-width="2"/>
+  <text x="88" y="989" class="label">一句话讲法</text>
+  <text x="88" y="1018" class="body">Qwen2.5-VL 的图像仍由完整 32 层 ViT 编码；VETTA 的“2-layer”指 Critic 侧语言 decoder 的深度（3B：36 → 2），Actor 不裁层。</text>
+  <text x="88" y="1048" class="small">实现状态：这是 VLM 版 VETTA 的目标结构图。当前 VETTA-clean 的 2 层 Critic smoke 使用纯文本 Qwen；VLM Critic 的图像输入与裁层路径尚未端到端验证。</text>
+</svg>

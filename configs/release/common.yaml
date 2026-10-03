@@ -1,0 +1,95 @@
+algorithm:
+  adv_estimator: luna_unified
+  gamma: 1.0
+  lam: 1.0
+  use_kl_in_reward: false
+  hybrid_advantage:
+    turn_gamma: 0.95
+    turn_lam: 0.95
+    composition_mode: residual
+    whiten_advantages: true
+    token_gae_boundary: next_token
+reward_model:
+  use_step_rewards: true
+data:
+  train_batch_size: 128
+  max_prompt_length: 4096
+  max_response_length: 512
+  filter_overlong_prompts: true
+  truncation: error
+  return_raw_chat: true
+  seed: 0
+actor_rollout_ref:
+  model:
+    use_remove_padding: true
+    enable_gradient_checkpointing: true
+  actor:
+    ppo_micro_batch_size_per_gpu: 8
+    ppo_epochs: 1
+    use_torch_compile: false
+    optim:
+      lr: 1.0e-6
+    use_kl_loss: true
+    kl_loss_coef: 0.01
+    kl_loss_type: low_var_kl
+    use_invalid_action_penalty: true
+    invalid_action_penalty_coef: 0.1
+    fsdp_config:
+      param_offload: false
+      optimizer_offload: false
+  rollout:
+    name: vllm
+    n: 1
+    temperature: 1.0
+    tensor_model_parallel_size: 2
+    gpu_memory_utilization: 0.35
+    max_model_len: 8192
+    enable_chunked_prefill: false
+    log_prob_micro_batch_size_per_gpu: 8
+    val_kwargs:
+      temperature: 0.4
+      do_sample: true
+  ref:
+    use_torch_compile: false
+    log_prob_micro_batch_size_per_gpu: 8
+    fsdp_config:
+      param_offload: true
+critic:
+  model:
+    num_value_heads: 2
+    override_config:
+      num_hidden_layers: 2
+    use_remove_padding: true
+    enable_gradient_checkpointing: true
+    fsdp_config:
+      param_offload: false
+      optimizer_offload: false
+  optim:
+    lr: 1.0e-5
+  ppo_micro_batch_size_per_gpu: 8
+  forward_micro_batch_size_per_gpu: 8
+  unified_luna_turn_loss_coef: 1.0
+env:
+  seed: 0
+  history_length: 2
+  rollout:
+    n: 1
+  resources_per_worker:
+    num_cpus: 0.1
+trainer:
+  n_gpus_per_node: 8
+  nnodes: 1
+  total_epochs: 150
+  total_training_steps: 150
+  test_freq: 5
+  save_freq: 5
+  checkpoint_slot_mode: latest_only
+  mask_batch_padding: true
+  resume_mode: disable
+  val_before_train: true
+  logger: [console]
+  project_name: vetta_official_validation
+ray_init:
+  num_cpus: 64
+  include_dashboard: false
+  object_store_memory: 8589934592

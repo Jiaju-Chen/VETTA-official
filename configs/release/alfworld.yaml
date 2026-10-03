@@ -1,0 +1,17 @@
+algorithm:
+  hybrid_advantage:
+    token_residual_scale: 1.0
+data:
+  val_batch_size: 140
+actor_rollout_ref:
+  actor:
+    ppo_mini_batch_size: 256
+critic:
+  ppo_mini_batch_size: 256
+env:
+  env_name: alfworld/AlfredTWEnv
+  max_steps: 50
+  alfworld:
+    eval_dataset: eval_in_distribution
+trainer:
+  monitor_validation_size: 140

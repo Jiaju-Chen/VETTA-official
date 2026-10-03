@@ -1,0 +1,18 @@
+algorithm:
+  hybrid_advantage:
+    token_residual_scale: 3.0
+data:
+  val_batch_size: 128
+actor_rollout_ref:
+  actor:
+    ppo_mini_batch_size: 64
+critic:
+  ppo_mini_batch_size: 64
+env:
+  env_name: webshop/WebAgentTextEnv
+  max_steps: 15
+  webshop:
+    use_small: true
+    human_goals: false
+trainer:
+  monitor_validation_size: 128
