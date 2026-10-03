@@ -22,6 +22,13 @@ models/
 !/verl/models/
 !/verl/models/**
 /verl/models/**/__pycache__/
+!/agent_system/environments/env_package/webshop/webshop/baseline_models/models/
+!/agent_system/environments/env_package/webshop/webshop/baseline_models/models/**
+!/agent_system/environments/env_package/webshop/webshop/web_agent_site/models/
+!/agent_system/environments/env_package/webshop/webshop/web_agent_site/models/**
+!/tests/models/
+!/tests/models/**
+__pycache__/
 hf_cache/
 ray_results/
 *.parquet
