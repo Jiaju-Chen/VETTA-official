@@ -1,9 +1,9 @@
 # Reproducibility
 
-For the release candidate's authoritative profiles, guards and acceptance
-stages, see [Official Quick Start](OFFICIAL_QUICKSTART_ZH.md) and
-[Release Acceptance](RELEASE_ACCEPTANCE.md). The inherited setup guidance
-below does not assert fresh-install or endpoint validation.
+For launch commands and experiment profiles, see [Quick Start](QUICKSTART.md)
+and [中文启动说明](OFFICIAL_QUICKSTART_ZH.md). See
+[Reproduction Checks](RELEASE_ACCEPTANCE.md) for environment, smoke,
+checkpoint, and evaluation checks.
 
 This document describes what is included in the code snapshot and what must be
 provided externally. The repository does not bundle benchmark data, model

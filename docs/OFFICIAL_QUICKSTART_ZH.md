@@ -2,6 +2,8 @@
 
 此入口先支持 Qwen2.5-1.5B-Instruct 的 ALFWorld / WebShop。训练需要 Linux、CUDA 和 NVIDIA GPU；Mac 本地只做配置、数据文件和发布包测试，不代表完成 GPU 复现。
 
+第一次使用可以从 [README](../README.md) 的 ALFWorld 示例开始；[英文完整 Quick Start](QUICKSTART.md) 给出了路径变量、依赖安装、smoke、训练、baseline 和最终测评命令。
+
 ## 1. 环境与资产
 
 建议 Python3.10、8张80GB卡。`requirements-reference.txt` 是已观察到的运行版本约束，不是已经通过全新安装验收的完整 lockfile。先安装匹配 CUDA12.4 的 PyTorch2.6.0 / torchvision0.21.0，再安装：
@@ -61,6 +63,8 @@ python scripts/run.py alfworld train --model "$MODEL" --data "$DATA" \
 smoke 仅8条轨迹、3轮上限、2次更新并保存 checkpoint，不可当作成功率实验。正式训练保持 ALFWorld mini256 / WebShop mini64，150次更新，5步验证和保存；默认保存 latest，旧的同槽内容会被替换。选择全新的输出和 checkpoint 目录，不影响其他运行。
 
 每卡 Actor/Critic micro8/8、remove-padding=True、gradient checkpointing=True 是工程起点，不是最优性能承诺。micro 必须整除每卡 mini-batch；缩小 micro 不改变全局 mini。入口拒绝和已有 GPU 进程重叠，不会自动杀进程。
+
+WebShop 建议显式使用 `--actor-micro 2 --critic-micro 8`，ALFWorld 示例采用8/8；完整28层 Critic 的 baseline 可根据显存下调 Critic micro。工程 micro 不改变有效 mini-batch。
 
 Ray object store 明确限制为8GiB，避免按大内存服务器的默认比例占满 /dev/shm。checkpoint 应放在空间充足的持久盘；用 /dev/shm 时必须另外备份，重启后文件会丢失。
 
